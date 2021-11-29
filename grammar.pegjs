@@ -25,7 +25,7 @@ subshell "a subshell"
 
 command "a single command"
  = pre:((variableAssignment / redirect) space+)*
-   name:(commandName / builtinCommandName)
+   name:(commandName)
    post:(space+ (redirect / argument))*
    pipe:(space* pipe)?
 
@@ -68,16 +68,25 @@ variableAssignment "a variable assignment"
  = name:writableVariableName '=' value:argument?
 
 commandName "command name"
- = !redirect
-   !keyword
-   !variableAssignment
-   name:(concatenation / builtinCommandName)
+ = builtinCommandName / normalCommandName
 
 builtinCommandName
- = '[[' / '['
+ = name:( '[[' / '[' )
+
+// `commandName` must not be a variable assignment or a keyword
+// to allow the respective cases of `statement` to ever be triggered
+normalCommandName
+ = !redirect
+   !variableAssignment
+   !keyword
+   it:concatenation
+
+normalText
+ = !redirect
+   it:concatenation
 
 argument "command argument"
- = commandName
+ = normalText
  / processSubstitution
 
 concatenation "concatenation of strings and/or variables"

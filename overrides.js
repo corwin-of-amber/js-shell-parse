@@ -11,6 +11,7 @@
  * they are defined by the generated parser.
  */
 
+var assert = require('assert')
 var isArray = require('isarray') // not actually used, just for readability
 
 var rules = exports.rules = {}
@@ -83,7 +84,7 @@ rules.statementList = function (first, tail, last) {
   })
 
   if (last) {
-    if (!prev) { debugger }
+    assert(prev, 'internal error') /** @oops */
     setOperator(last, prev)
   }
 
@@ -199,8 +200,12 @@ rules.chainedStatement = function (operator, statement) {
   return [operator, statement]
 }
 
-rules.commandName = function (name) {
-  return name
+rules.normalCommandName = rules.normalText = function (it) {
+  return it
+}
+
+rules.builtinCommandName = function (name) {
+  return {type: 'builtin', name: name}
 }
 
 rules.controlOperator = function (op) {

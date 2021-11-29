@@ -1,1 +1,4 @@
+.swp
+.*.swp
 node_modules
+/parser.js
