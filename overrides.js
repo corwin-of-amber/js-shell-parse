@@ -12,20 +12,17 @@
  */
 
 var assert = require('assert')
-var isArray = require('isarray') // not actually used, just for readability
 
 var rules = exports.rules = {}
 
 exports.initializer = [
-  'var isArray = require("isarray")',
-  'var map = require("array-map")',
   function join (arr) {
     return arr.join("")
   },
   function literal (string) {
     return {
       type: 'literal',
-      value: isArray(string) ? string.join('') : string
+      value: Array.isArray(string) ? string.join('') : string
     }
   },
   function first (arr) {
@@ -78,7 +75,7 @@ rules.script = function (statements) {
 rules.statementList = function (first, tail, last) {
   var statements = [head]
   var prev = head
-  map(tail, function (spaceOpSpaceCmd, i, cmds) {
+  tail.map(function (spaceOpSpaceCmd, i, cmds) {
     setOperator(spaceOpSpaceCmd[0], prev)
     statements.push(prev = spaceOpSpaceCmd[2])
   })
@@ -175,7 +172,7 @@ rules.command = function (pre, name, post, pipe) {
     next: null,
   }
 
-  map(pre, first).concat(map(post, second)).forEach(function (token) {
+  pre.map(first).concat(post.map(second)).forEach(function (token) {
     if (!token || !token.type) return
     switch (token.type) {
       case 'moveFd':
@@ -256,7 +253,7 @@ rules.singleQuote = function (inner) { return literal(inner) }
 
 rules.doubleQuote = function (contents) {
   var pieces = contents.map(function (it) {
-    return isArray(it) ? literal(it) : it
+    return Array.isArray(it) ? literal(it) : it
   })
   return flattenConcatenation(pieces)
 }

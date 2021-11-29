@@ -3,15 +3,10 @@
   "version": "0.0.2",
   "description": "Parse bash scripts into AST's",
   "main": "parser.js",
-  "dependencies": {
-    "array-map": "0.0.0",
-    "isarray": "0.0.1",
-    "parsimmon": "^0.7.0"
-  },
   "scripts": {
     "test": "tape tests/*.js",
-    "watch": "npm run prepublish && node build.js -w",
-    "prepublish": "node build.js > parser.js"
+    "watch": "npm run prepare && node build.js -w",
+    "prepare": "node build.js > parser.js"
   },
   "testling": {
     "files": "tests/*.js",
