@@ -232,6 +232,11 @@ rules.variableAssignment = function (name, value) {
   return {type: 'variableAssignment', name: name, value: value}
 }
 
+rules.variableAssignments = function (members) {
+  members = [members[0]].concat([].concat(...members[1]))
+  return members.filter(mem => mem.type === 'variableAssignment')
+}
+
 rules.writableVariableName = function () { return text() }
 
 rules.bareword = function (cs) { return literal(cs) }

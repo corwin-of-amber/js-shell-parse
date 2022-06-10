@@ -10,7 +10,7 @@ statement
  = statement:( subshell
              / bashExtensions
              / command
-             / variableAssignment
+             / variableAssignments
              / ifBlock
              / conditionalLoop
              / forLoop
@@ -66,6 +66,9 @@ declare "declare builtin"
 
 variableAssignment "a variable assignment"
  = name:writableVariableName '=' value:argument?
+
+variableAssignments
+ = members:(variableAssignment (space+ variableAssignment)*)
 
 commandName "command name"
  = builtinCommandName / normalCommandName

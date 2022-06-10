@@ -1,7 +1,7 @@
 {
   "name": "shell-parse",
-  "version": "0.0.2",
-  "description": "Parse bash scripts into AST's",
+  "version": "0.1.0",
+  "description": "Parse bash scripts into ASTs",
   "main": "parser.js",
   "scripts": {
     "test": "tape tests/*.js",
